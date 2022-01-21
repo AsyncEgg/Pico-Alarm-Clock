@@ -115,14 +115,27 @@ def showtime():
     return time24to12(t24)
 
 def checkalarm():
-    f = open("alarms.txt", "a")
+    lines = []
+    f = open('alarms.txt', 'r')
     lines = f.readlines()
-    count = 0
-    for line in lines:
-                count += 1
-    while count < 5:
-        count += 1
-        f.write('0:00'+'\n')
+    f.close()
+    
+    if len(lines) > 1:
+        f = open('alarms.txt', 'w')
+        for number, line in enumerate(lines):
+            if number not in [0]:
+                f.write(line)
+        f.close()
+
+def checktime():
+    hour = rtc.datetime()[4]
+    minute = rtc.datetime()[5]
+    f = open('alarms.txt', 'r')
+    atime = f.readlines()[0]
+    
+    if str(atime) == str(hour)+':'+str(minute)+'\n':
+        alarm()
+    sleep(0.05)
 
 hour = 0
 minute = 0
@@ -133,6 +146,7 @@ oled.show()
 
 while True:
     rngnumdisp(str(showtime()))
+    checktime()
     
     if sel.value():
         oled.fill(0)
@@ -189,97 +203,30 @@ while True:
                 oled.text("Loading...", 0, 0)
                 oled.show()
                 sleep(0.5)
+                val = 1
                 while True:
-                    val = checkval(val,4)
+                    out = False
+                    #make sure there are 5 items in alarm.txt
+                    checkalarm()
+                    
+                    val = checkval(val,2)
                     oled.text('Alarms',48,0)
                     
                     oled.show()
                     oled.fill(0)
-                
+                    
                     if val == 1:
                         oled.text(' 1: Set Alarm',0,18)
-                        oled.text('2: Delete Alarm',0,27)
-                        oled.text('3: Show Alarms',0,36)
-                        oled.text('4: Back',0,45)
+                        oled.text('2: Back',0,27)
                     if val == 2:
                         oled.text('1: Set Alarm',0,18)
-                        oled.text(' 2: Delete Alarm',0,27)
-                        oled.text('3: Show Alarms',0,36)
-                        oled.text('4: Back',0,45)
-                    if val == 3:
-                        oled.text('1: Set Alarm',0,18)
-                        oled.text('2: Delete Alarm',0,27)
-                        oled.text(' 3: Show Alarms',0,36)
-                        oled.text('4: Back',0,45)
-                    if val == 4:
-                        oled.text('1: Set Alarm',0,18)
-                        oled.text('2: Delete Alarm',0,27)
-                        oled.text('3: Show Alarms',0,36)
-                        oled.text(' 4: Back',0,45)
+                        oled.text(' 2: Back',0,27)
                         
-                    val = iodval(val,4)
+                    val = iodval(val,2)
                     
                     if sel.value() and val == 2:
-                        f = open("alarms.txt", "r")
-                        lines = f.readlines()
-                        Lines = []
-                        count = 0
-                        for line in lines:
-                            count += 1
-                            Lines.append(line.strip())
-                        
-                        while True:
-                            #make sure there are 5 items in alarm.txt
-                            checkalarm()
-                            val = checkval(val,5)
-                            oled.text('Alarms',48,0)
-                            oled.show()
-                            oled.fill(0)
-                        
-                            if val == 1:
-                                oled.text(' 1: '+Lines[0],0,18)
-                                oled.text('2: '+Lines[1],0,27)
-                                oled.text('3: '+Lines[2],0,36)
-                                oled.text('4: '+Lines[3],0,45)
-                                oled.text('5: '+Lines[4],0,54)
-                            if val == 2:
-                                oled.text('1: '+Lines[0],0,18)
-                                oled.text(' 2: '+Lines[1],0,27)
-                                oled.text('3: '+Lines[2],0,36)
-                                oled.text('4: '+Lines[3],0,45)
-                                oled.text('5: '+Lines[4],0,54)
-                            if val == 3:
-                                oled.text('1: '+Lines[0],0,18)
-                                oled.text('2: '+Lines[1],0,27)
-                                oled.text(' 3: '+Lines[2],0,36)
-                                oled.text('4: '+Lines[3],0,45)
-                                oled.text('5: '+Lines[4],0,54)
-                            if val == 4:
-                                oled.text('1: '+Lines[0],0,18)
-                                oled.text('2: '+Lines[1],0,27)
-                                oled.text('3: '+Lines[2],0,36)
-                                oled.text(' 4: '+Lines[3],0,45)
-                                oled.text('5: '+Lines[4],0,54)
-                            if val == 5:
-                                oled.text('1: '+Lines[0],0,18)
-                                oled.text('2: '+Lines[1],0,27)
-                                oled.text('3: '+Lines[2],0,36)
-                                oled.text('4: '+Lines[3],0,45)
-                                oled.text(' 5: '+Lines[4],0,54)
-                                
-                            val = iodval(val,5)
-                            
-                            if sel.value():
-                                f = open("alarms.txt", "r")
-                                lines = f.readlines()
-                                f.close()
-                                f = open("alarms.txt", "w")
-                                for line in lines:
-                                    if line.strip("\n") != Lines[val-1]:
-                                        f.write(line)
-                                f.close()
-                                break
-                                
+                        break
+                               
                     if sel.value() and val == 1:
                         oled.fill(0)
                         oled.text("Loading...", 0, 0)
@@ -336,8 +283,8 @@ while True:
                                         f.close
                                         out = True
                                         sleep(0.5)
-                                        #make sure you cant add more than 5 alarms
-                            
+                                        checkalarm()
+                                    
                             oled.fill(0)
                 
                 
