@@ -135,7 +135,6 @@ def checktime():
     
     if str(atime) == str(hour)+':'+str(minute)+'\n':
         alarm()
-    sleep(0.05)
 
 hour = 0
 minute = 0
@@ -146,7 +145,7 @@ oled.show()
 
 while True:
     rngnumdisp(str(showtime()))
-    checktime()
+    #oled.text(str(showtime()),0,0)
     
     if sel.value():
         oled.fill(0)
@@ -157,7 +156,7 @@ while True:
             out = False
             
             #check if value is out of range and correct it
-            val = checkval(val, 5)
+            val = checkval(val, 3)
             
             #display menu depending on value inputed
             oled.text('Menu',48,0)
@@ -165,38 +164,20 @@ while True:
             if val == 1:
                 oled.text(' 1: Alarm',0,18)
                 oled.text('2: Time',0,27)
-                oled.text('3: Display',0,36)
-                oled.text('4: General',0,45)
-                oled.text('5: Back', 0, 54)
+                oled.text('3: Back', 0, 36)
             if val == 2:
                 oled.text('1: Alarm',0,18)
                 oled.text(' 2: Time',0,27)
-                oled.text('3: Display',0,36)
-                oled.text('4: General',0,45)
-                oled.text('5: Back', 0, 54)
+                oled.text('3: Back',0,36)
             if val == 3:
                 oled.text('1: Alarm',0,18)
                 oled.text('2: Time',0,27)
-                oled.text(' 3: Display',0,36)
-                oled.text('4: General',0,45)
-                oled.text('5: Back', 0, 54)
-            if val == 4:
-                oled.text('1: Alarm',0,18)
-                oled.text('2: Time',0,27)
-                oled.text('3: Display',0,36)
-                oled.text(' 4: General',0,45)
-                oled.text('5: Back', 0, 54)
-            if val == 5:
-                oled.text('1: Alarm',0,18)
-                oled.text('2: Time',0,27)
-                oled.text('3: Display',0,36)
-                oled.text('4: General',0,45)
-                oled.text(' 5: Back', 0, 54)
+                oled.text(' 3: Back',0,36)
             oled.show()
             oled.fill(0)
             
             #incramit or decramit menu value 
-            val = iodval(val,5)
+            val = iodval(val,3)
             
             if sel.value() and val == 1:
                 oled.fill(0)
@@ -348,7 +329,7 @@ while True:
                     
                     oled.fill(0)
             #get out of the menu        
-            if sel.value() and val == 5:
+            if sel.value() and val == 4:
                 sleep(1)
                 break
             
