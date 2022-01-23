@@ -22,3 +22,5 @@
 **!! MAKE SURE TO ADD PULL DOWN RESISTORS TO THE BUTTONS !!**
 
 Use the select button from the time display screen to get into menus
+
+[Pico GPIO Pins](https://www.raspberrypi-spy.co.uk/wp-content/uploads/2021/01/raspberry_pi_pico_pinout.png)
